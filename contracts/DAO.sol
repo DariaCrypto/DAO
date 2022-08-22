@@ -138,11 +138,10 @@ contract DAO is AccessControl, ReentrancyGuard {
         endProposalCondition(proposalId)
         nonReentrant
     {
+        uint256 votersPercentage = _calculateVotersPercentage();
         Proposal storage proposal = _proposals[proposalId];
 
         uint256 votesAmount = proposal.consenting + proposal.dissenters;
-
-        uint256 votersPercentage = calculateVotersPercentage();
         uint256 users = proposal.usersVoted * 10**3;
 
         if (votesAmount >= minimumVotes && users >= votersPercentage) {
@@ -277,7 +276,7 @@ contract DAO is AccessControl, ReentrancyGuard {
     /**
      *@notice find out the last voting time
      */
-    function calculateVotersPercentage() private view returns (uint256) {
+    function _calculateVotersPercentage() private view returns (uint256) {
         return ((activeUsers.current() * 10**3) / 100) * minimumQuorum;
     }
 }

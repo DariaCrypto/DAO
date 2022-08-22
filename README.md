@@ -1,2 +1,0 @@
-# Pet project DAO.
-
